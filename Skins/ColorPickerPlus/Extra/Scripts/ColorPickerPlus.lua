@@ -15,7 +15,7 @@ function GetColor(key) return colors[key] or 0 end
 
 function SetScrubbers()
 
-    -- Scrubbers
+    -- HSB
     colors.scrubber_hue_0 = string.format('%s,%s,%s', HSBtoRGB((0/6), colors.cur_sat, colors.cur_bri))
     colors.scrubber_hue_60 = string.format('%s,%s,%s', HSBtoRGB((1/6), colors.cur_sat, colors.cur_bri))
     colors.scrubber_hue_120 = string.format('%s,%s,%s', HSBtoRGB((2/6), colors.cur_sat, colors.cur_bri))
@@ -28,6 +28,13 @@ function SetScrubbers()
     colors.scrubber_bri_left = string.format('%s,%s,%s', HSBtoRGB(colors.cur_hue, colors.cur_sat, 0))
     colors.scrubber_bri_right = string.format('%s,%s,%s', HSBtoRGB(colors.cur_hue, colors.cur_sat, 1))
     colors.scrubber_cursor = string.format('%s,%s,%s', HSBtoRGB(colors.scrubber_cursor_hue, colors.scrubber_cursor_sat, (1 - Clamp(ColorLumens(string.format('%s,%s,%s', HSBtoRGB(colors.cur_hue, colors.cur_sat, colors.cur_bri))),45,50) / 100)))
+    -- RGB
+    colors.scrubber_r_left = string.format('%s,%s,%s', 0, colors.cur_g, colors.cur_b)
+    colors.scrubber_r_right = string.format('%s,%s,%s', 255, colors.cur_g, colors.cur_b)
+    colors.scrubber_g_left = string.format('%s,%s,%s', colors.cur_r, 0, colors.cur_b)
+    colors.scrubber_g_right = string.format('%s,%s,%s', colors.cur_r, 255, colors.cur_b)
+    colors.scrubber_b_left = string.format('%s,%s,%s', colors.cur_r, colors.cur_g, 0)
+    colors.scrubber_b_right = string.format('%s,%s,%s', colors.cur_r, colors.cur_g, 255)
     -- Display
 	colors.disp_hue = string.format('%.0f', Round((colors.cur_hue * 360), 0))
 	colors.disp_sat = string.format('%.0f', Round((colors.cur_sat * 100), 0))
@@ -44,7 +51,7 @@ function SetRGB(...)
         colors.cur_rgb = arg[1]
         colors.cur_r, colors.cur_g, colors.cur_b = string.match(colors.cur_rgb, '(%d+),(%d+),(%d+)')
     else
-        colors['cur_' .. arg[1]] = arg[2]
+        colors['cur_' .. arg[1]] = Round(Clamp((SKIN:ParseFormula(arg[2]) * 255),0,255),0)
         colors.cur_rgb = string.format('%s,%s,%s', colors.cur_r, colors.cur_g, colors.cur_b)
     end
 
@@ -58,13 +65,13 @@ function SetRGB(...)
 
 end
 
-function SetHSL(...)
+function SetHSB(...)
 
     if arg.n == 1 then
         colors.cur_hsb = arg[1]
         
     else
-        colors['cur_' .. arg[1]] = SKIN:ParseFormula(arg[2])
+        colors['cur_' .. arg[1]] = Clamp(SKIN:ParseFormula(arg[2]),0,1)
         colors.cur_hsb = string.format('%s,%s,%s', colors.cur_hue, colors.cur_sat, colors.cur_bri)
     end
 
@@ -77,15 +84,15 @@ function SetHSL(...)
 
 end
 
-function ChangeRGB(key, value)
+function ChangeRGB(key, delta)
 
     SetRGB(key, Clamp(colors['cur_' .. key] + delta, 0, 255))
 
 end
 
-function ChangeHSL(key, delta)
+function ChangeHSB(key, delta)
 
-    SetHSL(key, Clamp(colors['cur_' .. key] + delta, 0, 1))
+    SetHSB(key, Clamp(colors['cur_' .. key] + delta, 0, 1))
 
 end
 
