@@ -27,11 +27,12 @@ function SetScrubbers()
     colors.scrubber_sat_right = string.format('%s,%s,%s', HSBtoRGB(colors.cur_hue, 1, colors.cur_bri))
     colors.scrubber_bri_left = string.format('%s,%s,%s', HSBtoRGB(colors.cur_hue, colors.cur_sat, 0))
     colors.scrubber_bri_right = string.format('%s,%s,%s', HSBtoRGB(colors.cur_hue, colors.cur_sat, 1))
-    colors.scrubber_cursor = string.format('%s,%s,%s', HSBtoRGB(colors.scrubber_cursor_hue, colors.scrubber_cursor_sat, (1 - Clamp(ColorLumens(string.format('%s,%s,%s', HSBtoRGB(colors.cur_hue, colors.cur_sat, colors.cur_bri))),35,65) / 100)))
+    colors.scrubber_cursor = string.format('%s,%s,%s', HSBtoRGB(colors.scrubber_cursor_hue, colors.scrubber_cursor_sat, (1 - Clamp(ColorLumens(string.format('%s,%s,%s', HSBtoRGB(colors.cur_hue, colors.cur_sat, colors.cur_bri))),45,50) / 100)))
     -- Display
-	colors.disp_hue = string.format('%.0f', Round((colors.cur_hue * 360), 5))
-	colors.disp_sat = string.format('%.0f', Round((colors.cur_sat * 100), 5))
-    colors.disp_bri = string.format('%.0f', Round((colors.cur_bri * 100), 5))
+	colors.disp_hue = string.format('%.0f', Round((colors.cur_hue * 360), 0))
+	colors.disp_sat = string.format('%.0f', Round((colors.cur_sat * 100), 0))
+    colors.disp_bri = string.format('%.0f', Round((colors.cur_bri * 100), 0))
+    colors.disp_hsb = string.format('%s,%s,%s', colors.disp_hue, colors.disp_sat, colors.disp_bri)
 
     -- PrintTable(colors)
 
