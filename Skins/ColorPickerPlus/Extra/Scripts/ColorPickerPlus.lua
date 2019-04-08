@@ -51,7 +51,7 @@ function SetRGB(...)
         colors.cur_rgb = arg[1]
         colors.cur_r, colors.cur_g, colors.cur_b = string.match(colors.cur_rgb, '(%d+),(%d+),(%d+)')
     else
-        colors['cur_' .. arg[1]] = Round(Clamp((SKIN:ParseFormula(arg[2]) * 255),0,255),0)
+        colors['cur_' .. arg[1]] = arg[3] and arg[2] or Round(Clamp((SKIN:ParseFormula(arg[2]) * 255),0,255),0)
         colors.cur_rgb = string.format('%s,%s,%s', colors.cur_r, colors.cur_g, colors.cur_b)
     end
 
@@ -86,7 +86,7 @@ end
 
 function ChangeRGB(key, delta)
 
-    SetRGB(key, Clamp(colors['cur_' .. key] + delta, 0, 255))
+    SetRGB(key, Clamp(colors['cur_' .. key] + delta, 0, 255), true)
 
 end
 
