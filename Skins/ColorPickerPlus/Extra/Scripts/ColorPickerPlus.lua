@@ -84,6 +84,14 @@ function SetHSB(...)
 
 end
 
+function SetHEX(value)
+
+    RmLog('SetHEX')
+
+    SetRGB(string.format('%s,%s,%s', HEXtoRGB(value)))
+
+end
+
 function ChangeRGB(key, delta)
 
     SetRGB(key, Clamp(colors['cur_' .. key] + delta, 0, 255), true)
