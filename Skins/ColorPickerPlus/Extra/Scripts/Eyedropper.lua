@@ -1,9 +1,6 @@
 -- setup initial constants
 function Initialize()
 
-    overlay_start_x = SKIN:GetVariable('CURRENTCONFIGX')
-    overlay_start_y = SKIN:GetVariable('CURRENTCONFIGY')
-
     monitor_boundaries = {}
     monitor_count = 0
 
@@ -18,6 +15,9 @@ end
 -- the sysinfo measure for monitor_count returns zero on the first update cycle. therefore, we must wait to set up the
 -- monitor_boundaries table until the second update cycle
 function Update()
+
+    overlay_start_x = SKIN:GetVariable('CURRENTCONFIGX')
+    overlay_start_y = SKIN:GetVariable('CURRENTCONFIGY')
     
     monitor_count = SKIN:GetMeasure('MeasureNumOfMonitors'):GetValue()
     for i=1,monitor_count do

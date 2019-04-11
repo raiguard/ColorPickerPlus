@@ -86,8 +86,6 @@ end
 
 function SetHEX(value)
 
-    RmLog('SetHEX')
-
     SetRGB(string.format('%s,%s,%s', HEXtoRGB(value)))
 
 end
