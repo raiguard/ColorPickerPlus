@@ -1,9 +1,8 @@
-debug = true
-colors = {}
-
+-- setup data structure and some constants, set initial rgb value
 function Initialize()
 
     dofile(SKIN:MakePathAbsolute('Extra\\Scripts\\HSBLib.lua'))
+    colors = {}
     colors.scrubber_cursor_hue,colors.scrubber_cursor_sat = RGBtoHSB(SKIN:GetVariable('colorBorder'))
     SetRGB(SKIN:GetVariable('baseColor'))
 
@@ -11,8 +10,10 @@ end
 
 function Update() end
 
+-- return the specified color from the colors table
 function GetColor(key) return colors[key] or 0 end
 
+-- set scrubber properties based on current color
 function SetScrubbers()
 
     -- HSB
@@ -41,10 +42,9 @@ function SetScrubbers()
     colors.disp_bri = string.format('%.0f', Round((colors.cur_bri * 100), 0))
     colors.disp_hsb = string.format('%s,%s,%s', colors.disp_hue, colors.disp_sat, colors.disp_bri)
 
-    -- PrintTable(colors)
-
 end
 
+-- set rgb to the given string, or set the given rgb property to the given value
 function SetRGB(...)
 
     if arg.n == 1 then
@@ -65,6 +65,7 @@ function SetRGB(...)
 
 end
 
+-- set hsb to the given string, or set the given hsb property to the given value
 function SetHSB(...)
 
     if arg.n == 1 then
@@ -85,50 +86,23 @@ function SetHSB(...)
 
 end
 
+-- set hex value from RGB
 function SetHEX(value)
 
     SetRGB(string.format('%s,%s,%s', HEXtoRGB(value)))
 
 end
 
+-- change an rgb property by the given delta
 function ChangeRGB(key, delta)
 
     SetRGB(key, Clamp(colors['cur_' .. key] + delta, 0, 255), true)
 
 end
 
+-- change an hsb property by the given delta
 function ChangeHSB(key, delta)
 
     SetHSB(key, Clamp(colors['cur_' .. key] + delta, 0, 1))
 
-end
-
--- function to make logging messages less cluttered
-function RmLog(message, type)
-
-    if type == nil then type = 'Debug' end
-      
-    if debug == true then
-        SKIN:Bang("!Log", message, type)
-    elseif type ~= 'Debug' then
-        SKIN:Bang("!Log", message, type)
-    end
-      
-end
-
-printIndent = '     '
-
--- prints the entire contents of a table to the Rainmeter log
-function PrintTable(table)
-    for k,v in pairs(table) do
-        if type(v) == 'table' then
-            local pI = printIndent
-            RmLog(printIndent .. tostring(k) .. ':')
-            printIndent = printIndent .. '  '
-            PrintTable(v)
-            printIndent = pI
-        else
-            RmLog(printIndent .. tostring(k) .. ': ' .. tostring(v))
-        end
-    end
 end
