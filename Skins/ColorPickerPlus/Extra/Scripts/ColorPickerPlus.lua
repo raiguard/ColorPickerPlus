@@ -76,6 +76,7 @@ function SetHSB(...)
     end
 
     colors.cur_rgb = string.format('%s,%s,%s', HSBtoRGB(colors.cur_hue, colors.cur_sat, colors.cur_bri))
+    colors.cur_r, colors.cur_g, colors.cur_b = string.match(colors.cur_rgb, '(%d+),(%d+),(%d+)')
     colors.cur_hex = RGBtoHEX(colors.cur_r, colors.cur_g, colors.cur_b)
 
     SetScrubbers()
